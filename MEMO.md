@@ -22,7 +22,7 @@ En lugar de aplicar una regla rígida igual para todos, solo se marca `contactar
 
 ---
 
-### 3. ¿Por Qué Se Están Yendo? (Hallazgos Clave para Gerencia)
+### 3. ¿Por qué se están yendo? (Hallazgos claves)
 1. **Caída de uso y fallos técnicos en Android:** Menor actividad reciente y mayor volumen de errores en los últimos 30 días son las señales más fuertes de riesgo. En los registros técnicos, **Android 5.4.0** presenta una tasa de error del **51.10%** (15,820 eventos en 704 clientes), muy por encima de **Android 5.3.3 (2.31%)**, **iOS 5.3.3 (2.10%)** y **Web (1.98%)**. A su vez, **Android 5.3.3** registra la mayor tasa de cancelación a 90 días (**15.93%**), seguida por **Android 5.4.0 (11.36%)**.
 2. **Señales tempranas en tickets de soporte:** Los tickets asociados a **lentitud**, temas recurrentes de atención y menciones de **cancelación** aportan alertas valiosas antes de que el cliente se dé de baja.
 3. **Facturas impagas:** Acumular facturas sin pagar al corte eleva el riesgo de salida. Entre los medios de pago, las tasas de impago son similares (alrededor de **3.84% a 4.27%**, con **débito automático** en **4.27%** y montos promedio cercanos a $37,100–$37,600 COP).
