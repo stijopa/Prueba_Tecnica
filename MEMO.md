@@ -1,6 +1,6 @@
 # MEMO EJECUTIVO — CONECTA+
 
-**Para:** Gerencia General y Direcciones de Producto, Operación y Retención  
+**Para:** Direcciones de Producto, Operación y Retención  
 **De:** Equipo de Analítica y Ciencia de Datos  
 **Fecha de corte de los datos:** 31 de diciembre de 2025  
 **Asunto:** Priorización rentable de contactos de retención a 90 días y causas principales de cancelación  
