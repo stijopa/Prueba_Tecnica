@@ -7,7 +7,7 @@
 
 ---
 
-### 1. Resumen Ejecutivo
+### 1. Resumen ejecutivo
 Durante 2025 la tasa de cancelación a 90 días en **Conecta+** mostró un ascenso sostenido (pasando de **10.72%** en el corte de marzo a **12.68%** en junio y **14.87%** en septiembre). Con el modelo predictivo (que integra comportamiento de uso, facturación, soporte y señales de texto de tickets) evaluamos a los **1,611 clientes activos** al cierre del 31 de diciembre de 2025 para definir **a quién contactar de forma rentable** e identificar **qué está impulsando las salidas**.
 
 - **Decisión de contacto:** Se recomienda contactar a **416 clientes (25.82% del total)** y no llamar al **74.18%** restante donde el costo del contacto supera el retorno esperado.
@@ -15,7 +15,7 @@ Durante 2025 la tasa de cancelación a 90 días en **Conecta+** mostró un ascen
 
 ---
 
-### 2. ¿A Quién Debemos Contactar? (Criterio de Rentabilidad)
+### 2. ¿A quién debemos contactar? (Criterio de Rentabilidad)
 Cada llamada o gestión de retención tiene un costo de **25,000 COP**, se asume una efectividad del **40%** para retener a un cliente que iba a cancelar y el valor salvado equivale a **12 meses** de su mensualidad vigente (Básico \$23,900, Estándar \$34,900, Premium \$49,900 o Familiar \$59,900 COP).
 
 En lugar de aplicar una regla rígida igual para todos, solo se marca `contactar = 1` cuando el beneficio esperado de retener al cliente supera los **25,000 COP** de costo. Así, un plan mayor justifica actuar con probabilidades de fuga más moderadas que un plan básico, protegiendo el margen de la campaña.
@@ -30,7 +30,7 @@ En lugar de aplicar una regla rígida igual para todos, solo se marca `contactar
 
 ---
 
-### 4. Recomendaciones Inmediatas
+### 4. Recomendaciones inmediatas
 - **Ejecutar la campaña preventiva sobre los 416 clientes priorizados** (`predicciones.csv`) antes de que caigan en inactividad avanzada o mayor mora.
 - **Informar y guiar a los clientes sobre el impacto de su versión de sistema operativo y los casos de lentitud reportados en soporte en paralelo a la gestión comercial.**
 - **Adelantar el contacto a señales tempranas de riesgo** y **distinguir `cambio_plan` de las cancelaciones definitivas** en los reportes de seguimiento de retención.
