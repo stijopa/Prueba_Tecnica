@@ -58,7 +58,7 @@ if not os.path.exists("/content/drive/MyDrive"):
 Instala las dependencias listadas en `requirements.txt` desde el repositorio (o desde una copia local en tu carpeta de Drive):
 
 ```bash
-!pip install -r https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/requirements.txt
+!pip install -r https://raw.githubusercontent.com/stijopa/Prueba_Tecnica/main/requirements.txt
 ```
 *(Si colocaste `requirements.txt` dentro de tu carpeta en Google Drive, puedes ejecutar `!pip install -r requirements.txt`).*
 
