@@ -68,3 +68,6 @@ Corre las celdas del *notebook* de principio a fin para:
 2. **Registrar y comparar en MLflow:** Ejecutar las corridas de modelado, registrar parámetros, métricas y artefactos, consultar `mlflow.search_runs()` y verificar el modelo seleccionado.
 3. **Generar `predicciones.csv`:** Calcular las probabilidades para los clientes activos al `2025-12-31`, aplicar la regla de decisión (`contactar`) según los supuestos de negocio y validar el archivo de salida.
 4. **Revisar causas y operación:** Analizar los factores de cancelación y los lineamientos para llevar el modelo a producción.
+
+### 5 Se realizar el punto extra del dash
+
