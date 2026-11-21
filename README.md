@@ -1,7 +1,6 @@
 # 📡 Conecta+ — Predicción de Churn a 90 Días y Estrategia de Retención
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)] (https://colab.research.google.com/github/stijopa/Prueba_Tecnica/blob/main/solucion.ipynb)
-
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/stijopa/Prueba_Tecnica/blob/main/solucion.ipynb)
 
 ---
 
