@@ -9,51 +9,33 @@
 
 ## 1. Resumen Ejecutivo
 
-Durante 2025, la tasa de cancelación a 90 días (`churn_90d`) en **Conecta+** mostró un crecimiento sostenido: pasó de **10.72%** en el corte de marzo (154 bajas de 1,436 clientes) a **12.68%** en junio (209 de 1,648) y alcanzó **14.87%** en septiembre (267 de 1,795), acumulando un promedio de **12.91%** (630 bajas en 4,879 evaluaciones).
+Durante 2025 la tasa de cancelación a 90 días (`churn_90d`) en **Conecta+** mostró un ascenso sostenido, pasando de **10.72%** en el corte del 31 de marzo de 2025 (1,436 registros) a **12.68%** en el 30 de junio de 2025 (1,648 registros) y **14.87%** en el 30 de septiembre de 2025 (1,795 registros). A partir del modelo predictivo calibrado, evaluamos a los **1,611 clientes activos** al cierre del 31 de diciembre de 2025 para definir **a quién contactar de forma rentable** e identificar **qué está impulsando las salidas**.
 
-Con el modelo predictivo —que integra uso de la aplicación, historial de facturación, tickets de soporte y señales de texto de atención— evaluamos a los **1,611 clientes activos** al cierre del 31 de diciembre de 2025 para definir **a quién contactar de forma rentable** y entender **qué está impulsando las salidas**:
-
-* **Decisión de contacto:** Se recomienda contactar a **416 clientes (25.82% del total)** y no llamar al **74.18%** restante, donde el costo de gestión supera el retorno esperado.
-* **Impacto financiero proyectado:** La campaña estima un **beneficio neto total de 8,695,294 COP** (un promedio de **20,902 COP** netos por cliente contactado), superando en **+633,650 COP (+7.86%)** y **+14 clientes** priorizados a la versión previa sin señales de texto de soporte.
+* **Decisión de contacto:** Se prioriza contactar únicamente a los clientes cuyo beneficio esperado supera el costo de gestión, evitando invertir recursos donde el retorno no compensa el esfuerzo.
+* **Impacto de negocio:** Enfocar el contacto en los casos rentables permite proteger ingresos recurrentes a 12 meses sin saturar al equipo de retención con cuentas de bajo retorno.
 
 ---
 
 ## 2. ¿A Quién Debemos Contactar? (Criterio de Rentabilidad)
 
-Cada gestión de retención tiene un costo operativo de **25,000 COP**, se asume una efectividad del **40%** para retener a un cliente en riesgo y el valor salvado equivale a **12 meses** de su mensualidad vigente:
+Cada gestión de retención tiene un costo de **25,000 COP**, se estima una efectividad del **40%** para retener a un cliente que iba a cancelar y el valor salvado corresponde a **12 meses** de su mensualidad vigente (**Básico** $23,900, **Estándar** $34,900, **Premium** $49,900 o **Familiar** $59,900 COP).
 
-| Plan Vigente | Mensualidad (COP) | Valor Retenido 12 Meses (COP) |
-| :--- | :---: | :---: |
-| **Básico** | $23,900 | $286,800 |
-| **Estándar** | $34,900 | $418,800 |
-| **Premium** | $49,900 | $598,800 |
-| **Familiar** | $59,900 | $718,800 |
-
-En lugar de aplicar un umbral rígido igual para toda la base, solo se marca `contactar = 1` cuando el beneficio esperado de retener al cliente supera los **25,000 COP** de costo. De esta forma, los planes de mayor ingreso justifican actuar con probabilidades de fuga más moderadas que un plan básico, maximizando el margen neto de la campaña.
+En lugar de aplicar un corte fijo igual para todos, la decisión de contactar (`contactar = 1`) se activa solo cuando el beneficio esperado de retener al cliente supera los **25,000 COP** de costo. De este modo, los planes de mayor mensualidad justifican actuar con probabilidades de fuga más moderadas que un plan básico, cuidando el margen de toda la campaña.
 
 ---
 
-## 3. ¿Por Qué Se Están Yendo? (Hallazgos Clave)
+## 3. ¿Por Qué Se Están Yendo? (Hallazgos Clave de los Datos)
 
-1. **Caída de uso y fricción técnica en Android:**
-   * La reducción de actividad reciente (`eventos_30d`) y el aumento de errores en los últimos 30 días (`errores_30d`) son motores centrales de cancelación en el modelo.
-   * En los registros técnicos, **Android 5.4.0** concentra una tasa de error del **51.10%** (15,820 eventos en 704 clientes), muy por encima de **Android 5.3.3 (2.31%)**, **iOS 5.3.3 (2.10%)** y **Web (1.98%)**.
-   * Aunque en el acumulado general **Android 5.3.3** muestra mayor `churn_90d` (**15.93%** en 2,172 evaluaciones) que **Android 5.4.0** (**11.36%** en 484 evaluaciones), al desagregar por fecha de corte se comprueba que en **`2025-09-30`** **Android 5.4.0** alcanza **`19.78%`** (273 evaluaciones) frente a **`19.71%`** en **Android 5.3.3** (685 evaluaciones), tras haber tenido baja presencia en marzo (`0.00%`) y junio (`0.70%`). Adicionalmente, **Android 5.3.3** concentra **`19.75%`** de bajas por fricción voluntaria y **`18.65%`** de `cambio_plan`.
-
-2. **Alertas tempranas en tickets de soporte:**
-   * Los reportes asociados a **lentitud**, recurrencia de atención y menciones de **cancelación** anticipan la salida antes de que el cliente formalice su baja.
-
-3. **Facturación e impagos al corte:**
-   * Acumular facturas impagas al momento del corte (`impagas_al_corte_count`) incrementa la probabilidad de cancelación. Entre los medios de pago, las tasas de factura impaga oscilan entre **3.84% y 4.27%** (**débito automático** en **4.27%**, **efectivo** en **3.90%**, **tarjeta** en **3.88%** y **PSE** en **3.84%**, con montos promedio cercanos a $37,113–$37,600 COP). Al analizar los datos, se diferenció el saldo impago puntual al corte del histórico acumulado de facturas (`11.58%` de churn en historial con impago vs. `13.76%` sin impago) para evitar lecturas sesgadas.
-
-4. **Intervención reactiva actual y separación de `cambio_plan`:**
-   * De los **892 clientes** marcados como contactados por retención en el histórico, **845 (94.73%)** ya figuraban inactivos, con un `churn_90d` del **47.00%** (832 evaluaciones) frente al **5.91%** (4,047 evaluaciones) en no contactados, evidenciando que la gestión actual actúa de forma reactiva o tardía.
-   * En los motivos de cierre, **`cambio_plan`** (781 evaluaciones; **10.93%** en la distribución general de suscripciones) registra un `churn_90d` de **`10.50%`**, muy por debajo de los motivos de fricción o baja real: **`facturacion` (`62.50%`)**, **`competencia` (`62.39%`)**, **`precio` (`60.26%`)**, **`calidad_servicio` (`56.25%`)**, **`no_lo_usa` (`56.19%`)**, **`problemas_tecnicos` (`53.39%`)** y **`otro` (`52.50%`)**. Separar `cambio_plan` evita sobreestimar la fuga voluntaria.
+1. **Fuga creciente en 2025 y mayor exposición en Android:** La cancelación a 90 días subió **4.15 puntos porcentuales** entre el primer corte de 2025 (**10.72%**) y el tercero (**14.87%**). Al observar la plataforma principal al corte, **Android** registra la mayor tasa de `churn_90d` (**15.19%** sobre 2,659 filas / 1,181 clientes), por encima de **iOS** (**10.48%** sobre 1,785 filas / 795 clientes) y **Web** (**8.97%** sobre 435 filas / 193 clientes).
+2. **Alta tasa de error en Android 5.4.0:** En los registros de eventos, **Android 5.4.0** presenta una tasa de error del **51.10%** (15,820 eventos en 704 clientes), muy superior a **Android 5.3.3** (**2.31%** en 42,448 eventos / 1,232 clientes), **iOS 5.3.3** (**2.10%** en 39,152 eventos / 879 clientes) y **Web** (**1.98%** en 10,392 eventos / 220 clientes).
+3. **Facturas impagas y presión de cobro:** Entre los métodos de pago, las tasas de factura impaga son similares y moderadas —**débito automático** **4.27%** (monto promedio ~$37,355 COP), **efectivo** **3.90%** (~$37,113 COP), **tarjeta** **3.88%** (~$37,268 COP) y **PSE** **3.84%** (~$37,600 COP)—. Sin embargo, al observar el estado al corte en el conjunto de entrenamiento, los clientes con facturas impagas (`tiene_impago = 1`, 1,461 filas) muestran un `churn_90d` de **15.74%** frente a **11.70%** en quienes no registran impagos (`0`, 3,418 filas).
+4. **Contacto de retención concentrado en casos críticos:** Quienes figuran contactados por retención hasta el corte (`contactado_retencion_hasta_corte = 1`, 74 filas / 63 clientes) presentan un `churn_90d` de **64.86%**, frente a **12.11%** en los no contactados (`0`, 4,805 filas / 2,138 clientes), lo que refuerza la necesidad de actuar de forma preventiva antes de que el deterioro sea irreversible.
+5. **Diferenciar `cambio_plan` de las cancelaciones reales:** De **3,368 suscripciones**, **1,611 (47.83%)** no tienen motivo registrado (`sin_cancelacion_o_None`). Entre los motivos visibles, el más frecuente es **`cambio_plan`** con **368 casos (10.93%)**, seguido de **`problemas_tecnicos`** (**280 · 8.31%**), **`calidad_servicio`** (**229 · 6.80%**), **`otro`** (**204 · 6.06%**), **`no_lo_usa`** (**188 · 5.58%**), **`facturacion`** (**181 · 5.37%**), **`competencia`** (**170 · 5.05%**) y **`precio`** (**137 · 4.07%**). En el cruce con `churn_90d`, **`cambio_plan`** muestra apenas **10.50%** de cancelación a 90 días (781 filas), mientras que los motivos asociados a fricción superan el **52%–62.5%** (**facturación** **62.50%**, **competencia** **62.39%**, **precio** **60.26%**, **calidad de servicio** **56.25%**, **no lo usa** **56.19%**, **problemas técnicos** **53.39%** y **otro** **52.50%**).
 
 ---
 
-## 4. Acciones Recomendadas
+## 4. Recomendaciones Inmediatas
 
-* **Orientación preventiva al usuario:** Informar y guiar a los clientes —especialmente en **Android 5.4.0** y **Android 5.3.3**— sobre cómo su versión de sistema operativo o aplicación y los reportes de lentitud pueden afectar su experiencia, acompañando esa orientación con la gestión comercial.
-* **Despliegue de campaña anticipada:** Ejecutar el contacto preventivo sobre los **416 clientes** priorizados (`contactar = 1`) en `predicciones.csv` antes de que se deteriore su uso o acumulen impagos.
-* **Gobierno de métricas y monitoreo:** Reportar por separado `cambio_plan` de las bajas por fricción, mantener controles temporales estrictos para evitar fuga de información en futuros reentrenamientos y monitorear periódicamente la tasa real de retención alcanzada frente al **40%** proyectado.
+* **Priorizar la gestión comercial rentable:** Concentrar las llamadas de retención en los clientes con beneficio esperado positivo bajo los supuestos de **25,000 COP**, **40%** de efectividad y **12 meses** de valor por plan.
+* **Informar y orientar a los usuarios sobre su versión y reportes de lentitud:** Guiar a los clientes —especialmente en **Android 5.4.0** y **Android 5.3.3**— sobre cómo su versión de sistema operativo/aplicación o los reportes de lentitud pueden incidir en su experiencia, acompañando esa orientación con la gestión comercial.
+* **Actuar antes del deterioro y separar `cambio_plan`:** Adelantar el contacto preventivo en clientes con señales de fricción o facturas impagas al corte, y reportar **`cambio_plan`** por separado de las bajas definitivas para medir con precisión la pérdida real de clientes.
