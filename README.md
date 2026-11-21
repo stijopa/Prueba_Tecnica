@@ -88,7 +88,7 @@ Adoptamos un enfoque **híbrido, ligero y trazable** a nivel de `(cliente_id, fe
 * **Límites:** Las reglas y TF-IDF + SVD no captan ironía, sarcasmo o negaciones complejas con la precisión semántica de *embeddings* densos o un *LLM*, y las agregaciones por ventana resumen tendencias sin conservar el orden exacto de cada acción dentro de una sesión. Un *LLM* o *embeddings* aportarían mayor matiz semántico en textos ambiguos, pero con mayor costo computacional, latencia y riesgo de *overfitting* dado el volumen de datos.
 
 ### 7️⃣ Llevarlo a producción
-* **Ejecución programada por corte:** Automatizar el *pipeline* en cada corte operativo cuando se realicen los cortes de facturación.
+* **Ejecución programada por corte:** Automatizar el *pipeline* en cada corte operativo cuando se realicen los cortes de los ciclos de facturación.
 * **Trazabilidad y registro:** Registrar cada corrida en MLflow (versión del modelo, parámetros, métricas y fecha de corte de datos).
 * **Reentrenamiento extraordinario (por evento):** Disparar un reentrenamiento fuera de calendario si ocurren cambios estructurales relevantes, como lanzamientos o cambios de precios/planes, migraciones o cambios en la app/plataformas, modificaciones en los procesos de cobro/retención o una caída significativa en las métricas de validación.
 * **Rentabilidad real negativa:** Si en la operación real, la retención es muy inferior al 40% esperado o el costo operativo real supera lo presupuestado, haciendo que contactar deje de generar beneficio neto positivo.
