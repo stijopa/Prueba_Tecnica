@@ -1,5 +1,6 @@
 ## Uso de la IA
 
+* **Tiempo estimado:** Se utilizó **7 horas** aprox para realizar el reto.
 * **Propósito general:** Se utilizó **Gemini** para acelerar el desarrollo y el análisis del proyecto.
 * **Exploración de datos (EDA):** Se propuso utilizar la librería **`sweetviz`** para obtener insumos adicionales durante el análisis exploratorio de datos.
 * **Modelado:** Se propuso implementar un modelo de **regresión logística** y un modelo de **XGBoost**.
