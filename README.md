@@ -70,3 +70,26 @@ Corre las celdas del *notebook* de principio a fin para:
 
 ### 5️⃣ Se realizar el punto extra: Dashboard en Streamlit
 
+### 6️⃣ Aprovechamiento de Tickets (`tickets.jsonl`) y Logs de Uso (`eventos.jsonl.gz`)
+
+#### Enfoque elegido
+Adoptamos un enfoque **híbrido, ligero y trazable** a nivel de `(cliente_id, fecha_corte)`:
+* **Tickets de soporte (`tickets.jsonl`):** Combinación de **reglas de dominio por palabras clave/patrones** (intenciones de cancelación, cobros/facturación, fallos/errores, lentitud), **NLP clásico comprimido** (`TfidfVectorizer` + `TruncatedSVD` con pocas componentes) y **variables estructuradas** (tickets previos al corte, proporción abiertos/sin resolver, recencia y satisfacción homologada).
+* **Logs de uso (`eventos.jsonl.gz`):** **Agregaciones tabulares por ventanas temporales y ratios técnicos** (días activos, sesiones/eventos en ventanas recientes vs. históricas, caída de uso y tasa de errores con `codigo_error` por `plataforma` y `version_app`), en lugar de modelar el log como texto libre o secuencia paso a paso.
+
+#### Cómo lo implementamos
+1. **Corte temporal estricto (anti-*leakage*):** Cada registro o evento se filtra con `fecha <= fecha_corte` (`2025-12-31` para `clientes_a_puntuar`), evitando información futura o cierres posteriores al corte.
+2. **Homologación y limpieza:** Se normalizan esquemas heterogéneos y texto en `tickets.jsonl` antes de extraer señales.
+3. **Ajuste dentro de entrenamiento:** Cualquier transformación aprendida del texto (como TF-IDF + SVD) se ajusta **únicamente en los datos de entrenamiento** (o dentro de cada *fold* de validación) y luego transforma validación/puntuación.
+4. **Agregación por cliente y corte:** Se unen las métricas de soporte y uso mediante *left join* a la tabla base sin alterar el grano de `(cliente_id, fecha_corte)`.
+
+#### Justificación y límites
+* **Por qué esta elección:** Con un tamaño de muestra moderado y variables tabulares de CRM, suscripciones y facturación, evita sobreajuste, mantiene baja latencia/costo operativo y ofrece alta explicabilidad para gerencia (por ejemplo, aislando picos críticos de error en versiones específicas de app o fricción operativa).
+* **Límites:** Las reglas y TF-IDF + SVD no captan ironía, sarcasmo o negaciones complejas con la precisión semántica de *embeddings* densos o un *LLM*, y las agregaciones por ventana resumen tendencias sin conservar el orden exacto de cada acción dentro de una sesión. Un *LLM* o *embeddings* aportarían mayor matiz semántico en textos ambiguos, pero con mayor costo computacional, latencia y riesgo de *overfitting* dado el volumen de datos.
+
+### 7️⃣ Llevarlo a producción
+* **Ejecución programada por corte:** Automatizar el *pipeline* en cada corte operativo cuando se realicen los cortes de facturación.
+* **Trazabilidad y registro:** Registrar cada corrida en MLflow (versión del modelo, parámetros, métricas y fecha de corte de datos).
+* **Reentrenamiento extraordinario (por evento):** Disparar un reentrenamiento fuera de calendario si ocurren cambios estructurales relevantes, como lanzamientos o cambios de precios/planes, migraciones o cambios en la app/plataformas, modificaciones en los procesos de cobro/retención o una caída significativa en las métricas de validación.
+* **Rentabilidad real negativa:** Si en la operación real, la retención es muy inferior al 40% esperado o el costo operativo real supera lo presupuestado, haciendo que contactar deje de generar beneficio neto positivo.
+
